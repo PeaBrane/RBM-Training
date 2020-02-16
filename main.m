@@ -10,7 +10,7 @@ n = 9;
 m = 12;
 nd = 1;
 w_ini = 0.01;
-copies = 1000;
+copies = 10;
 
 %%%%% Training Parameters %%%%
 
@@ -98,7 +98,11 @@ end
 
 end
 
-tot_list = cat(3,KL_list,frus_list);
-save('data.mat','tot_list');
+% tot_list = cat(3,KL_list,frus_list);
+% save('data.mat','tot_list');
+% 
+% data = load('data.mat');
+% totlist = data.tot_list;
+% KL_list = tot_list(:,:,1); frus_list = tot_list(:,:,2);
 
-% myplot(1:length(KL_list),cat(3,KL_list, frus_list),[30 50 70],false,false);
+myplot(1:length(KL_list),cat(3,KL_list, frus_list),[40 50 60],false,false);
