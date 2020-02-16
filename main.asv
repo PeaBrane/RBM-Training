@@ -6,11 +6,11 @@ rng(0);
 
 %%%%% Network Parameters %%%%%
 
-n = 9;
-m = 12;
+n = 6;
+m = 6;
 nd = 1;
 w_ini = 0.01;
-copies = 1000;
+copies = 10;
 
 %%%%% Training Parameters %%%%
 
@@ -101,4 +101,7 @@ end
 tot_list = cat(3,KL_list,frus_list);
 save('data.mat','tot_list');
 
-% myplot(1:length(KL_list),cat(3,KL_list, frus_list),[30 50 70],false,false);
+data = load('data.mat');
+tot_list = data.tot_list;
+KL_list = tot_list(:,:,1); frus_list = tot_li
+myplot(1:length(KL_list),cat(3,KL_list, frus_list),[30 50 70],false,false);

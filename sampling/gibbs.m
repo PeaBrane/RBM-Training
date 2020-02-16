@@ -1,8 +1,9 @@
-function [vd,hd,vhd,vm,hm,vhm] = gibbs(a,b,w,k,v,prob)
+function [vd,hd,vhd,vm,hm,vhm] = gibbs(a,b,w,k,v0,smooth)
 
+runs = size(v0,1);
 n = length(a); m = length(b);
-runs = size(v,1);
 a = repmat(a, [runs 1]); b = repmat(b, [runs 1]);
+v = v0;
 
 vlist = zeros(runs,n,k);
 hlist = zeros(runs,m,k);
@@ -31,20 +32,20 @@ for ki = 1:k
     
 end
 
-if prob
+if smooth
     vlist(:,:,end) = vpp;
 end
 
 for run = 1:runs
-vhd = vhd + v(run,:).'*hpp(run,:);
+vhd = vhd + v0(run,:).'*hpp(run,:);
 for ki = 1:k
     vhm = vhm + vlist(run,:,ki).'*hlist(run,:,ki);
 end
 end
-vhm = vhm/(runs*k);
 vhd = vhd/runs;
+vhm = vhm/(runs*k);
 
-vd = mean(v,1); 
+vd = mean(v0,1); 
 hd = mean(hpp,1); 
 
 vm = mean(vlist,[1 3]); 
