@@ -70,12 +70,12 @@ end
 
 xlabel('Epochs', 'fontweight', 'bold', 'fontsize', 14);
 set(gca,'fontweight','bold','fontsize',14);
-yyaxis left;
+% yyaxis left;
 ylabel('KL Divergence', 'fontweight', 'bold', 'fontsize', 16, 'color', brighten(cmap(1,:),-0.3));
 set(gca,'ycolor',brighten(cmap(1,:),-0.3));
-yyaxis right;
-ylabel('Frustration Index', 'fontweight', 'bold', 'fontsize', 16, 'color', brighten(cmap(2,:),-0.3));
-set(gca,'ycolor',brighten(cmap(2,:),-0.3));
+% yyaxis right;
+% ylabel('Frustration Index', 'fontweight', 'bold', 'fontsize', 16, 'color', brighten(cmap(2,:),-0.3));
+% set(gca,'ycolor',brighten(cmap(2,:),-0.3));
 
 grid on;
 grid minor;

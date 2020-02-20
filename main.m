@@ -10,7 +10,7 @@ n = 9;
 m = 12;
 nd = 1;
 w_ini = 0.01;
-copies = 1000;
+copies = 10000;
 
 %%%%% Training Parameters %%%%
 
@@ -66,45 +66,59 @@ interval = 1;
 
 %%%%% Update %%%%%
 
-mkdir('data');
-parfor copy = 1:copies
+% mkdir('data');
+% parfor copy = 1:copies
+% 
+% a = w_ini*(2*rand([1 n]));
+% b = w_ini*(2*rand([1 m]));
+% w = w_ini*(2*rand([n m]));
+% KL_list = zeros( 1, floor(epochs/interval) );
+% frus_list = zeros( 1, floor(epochs/interval) );
+% [ind,vdata] = data_sb(n,5);
+% 
+% c_monitor = 0;
+% for ep = 1:epochs
+%     
+% if ~mod(ep,interval)
+%     c_monitor = c_monitor + 1;
+% end
+% % mydot(ep,epochs);
+%     
+% lambda = lmax - (lmax - lmin)*ep/epochs;
+% 
+% [vd,hd,vhd,vm,hm,vhm] = gibbs(a,b,w,k,vdata,smooth);
+% grada = lambda*(vd - vm); 
+% gradb = lambda*(hd - hm); 
+% gradw = lambda*(vhd - vhm);
+% a = a + grada;
+% b = b + gradb;
+% w = w + gradw;
+% if ~mod(ep,interval)
+%     [~,KL] = get_KL(vdata, a, b, w);
+%     [v0,h0] = brute(a,b,w);
+%     frus = get_frus(a,b,w,v0,h0);
+%     KL_list(c_monitor) = KL;
+%     frus_list(c_monitor) = frus;
+% end
+% end
+% 
+% totlist = cat(3,KL_list,frus_list);
+% parsave(strcat('data/instance_',num2str(copy),'.mat'),totlist);
+% 
+% end
 
-a = w_ini*(2*rand([1 n]));
-b = w_ini*(2*rand([1 m]));
-w = w_ini*(2*rand([n m]));
-KL_list = zeros( 1, floor(epochs/interval) );
-frus_list = zeros( 1, floor(epochs/interval) );
-[ind,vdata] = data_sb(n,5);
-
-c_monitor = 0;
-for ep = 1:epochs
+KL_list = zeros(copies,floor(epochs/interval));
+frus_list = zeros(copies,floor(epochs/interval));
+counter = 0;
+for copy = 1:copies
+   
+    counter = counter + 1;
+    fn = strcat('data/instance_',num2str(copy),'.mat');
+    data = load(fn);
+    data = data.variable;
+    KL_list(copy,:) = data(1,:,1);
+    frus_list(copy,:) = data(1,:,2);
     
-if ~mod(ep,interval)
-    c_monitor = c_monitor + 1;
-end
-% mydot(ep,epochs);
-    
-lambda = lmax - (lmax - lmin)*ep/epochs;
-
-[vd,hd,vhd,vm,hm,vhm] = gibbs(a,b,w,k,vdata,smooth);
-grada = lambda*(vd - vm); 
-gradb = lambda*(hd - hm); 
-gradw = lambda*(vhd - vhm);
-a = a + grada;
-b = b + gradb;
-w = w + gradw;
-if ~mod(ep,interval)
-    [~,KL] = get_KL(vdata, a, b, w);
-    [v0,h0] = brute(a,b,w);
-    frus = get_frus(a,b,w,v0,h0);
-    KL_list(c_monitor) = KL;
-    frus_list(c_monitor) = frus;
-end
-end
-
-totlist = cat(3,KL_list,frus_list);
-parsave(strcat('data/instace_',num2str(copy),'.mat'),'totlist');
-
 end
 
 % tot_list = cat(3,KL_list,frus_list);
@@ -114,4 +128,4 @@ end
 % totlist = data.tot_list;
 % KL_list = totlist(:,:,1); frus_list = totlist(:,:,2);
 
-% myplot(1:length(KL_list),cat(3,KL_list, frus_list),[30 50 70],false,false);
+myplot(1:size(KL_list,2),cat(3,KL_list, frus_list),[30 50 70],false,false);
